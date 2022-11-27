@@ -1,57 +1,37 @@
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import { Layout, Typography, ConfigProvider } from "antd";
+import { AddProjectButton, ProjectsList } from "./features/projects/components";
 import './App.css';
+import { useSelector } from "react-redux";
+import { selectHasProjects, selectShowCreationForm } from "./features/projects/projectsSlice";
+
+const { Header, Content } = Layout;
+const { Title } = Typography;
 
 function App() {
+  const hasProjects = useSelector(selectHasProjects);
+  const showForm = useSelector(selectShowCreationForm);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <ConfigProvider theme={{
+      components: {
+        Layout: {
+          colorBgHeader: '#F7F9FD',
+          colorBgBody: hasProjects || showForm ? '#F7F9FD' : '#ffffff',
+        }
+      }
+    }}>
+      <Layout className="layout" >
+        <AddProjectButton className="header-add-project-btn" />
+        <Header className="header">
+          <img src="/img/ThunkableBeaver.png" className="logo" alt="logo" />
+          <Title level={5} className="title">My Projects</Title>
+        </Header>
+        <Content className="content">
+          <ProjectsList />
+        </Content>
+      </Layout>
+    </ConfigProvider>
   );
 }
 
